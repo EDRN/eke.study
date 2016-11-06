@@ -1,5 +1,5 @@
 # encoding: utf-8
-# Copyright 2009–2012 California Institute of Technology. ALL RIGHTS
+# Copyright 2009–2016 California Institute of Technology. ALL RIGHTS
 # RESERVED. U.S. Government Sponsorship acknowledged.
 
 '''
@@ -23,6 +23,7 @@ _logger = logging.getLogger(__name__)
 # Interface identifier for EDRN Collaborative Group, from edrnsite.collaborations
 _collabGroup = 'edrnsite.collaborations.interfaces.collaborativegroupindex.ICollaborativeGroupIndex'
 
+
 class StudyFolderIngestor(KnowledgeFolderIngestor):
     '''Study folder ingestion.'''
     def __call__(self, rdfDataSource=None):
@@ -45,6 +46,9 @@ class StudyFolderIngestor(KnowledgeFolderIngestor):
         handler = StudyHandler()
         t0 = time.time()
         for uri, predicates in statements.items():
+            if unicode(uri) == u'http://edrn.nci.nih.gov/data/protocols/0':
+                # Bad data from DMCC
+                continue
             results = catalog(identifier=unicode(uri), object_provides=IProtocol.__identifier__)
             objectID = handler.generateID(uri, predicates, normalizerFunction)
             if len(results) == 1 or objectID in context.keys():
@@ -81,7 +85,7 @@ class StudyFolderIngestor(KnowledgeFolderIngestor):
         for protocol in [i.obj for i in createdObjects]:
             cbText = protocol.collaborativeGroupText
             if not cbText: continue
-            cbText = cbText.strip() # DMCC sometimes has a single space in their database
+            cbText = cbText.strip()  # DMCC sometimes has a single space in their database
             for cbID in cbText.split(', '):
                 cbName = COLLABORATIVE_GROUP_DMCC_IDS_TO_NAMES.get(cbID)
                 if cbName:
@@ -91,6 +95,7 @@ class StudyFolderIngestor(KnowledgeFolderIngestor):
                             currentProtocols.append(protocol)
                             collabGroup.setProtocols(currentProtocols)
 
+
 class StudyHandler(IngestHandler):
     '''Handler for ``Protocol`` objects.'''
     def generateID(self, uri, predicates, normalizerFunction):
@@ -99,4 +104,3 @@ class StudyHandler(IngestHandler):
         p = context[context.invokeFactory('Protocol', objectID)]
         updateObject(p, uri, predicates, context)
         return [CreatedObject(p)]
-
