@@ -6,6 +6,12 @@ changed, what's been fixed, and so forth, follows.  For issue IDs mentioned
 below, see the issue tracker at https://oodt.jpl.nasa.gov/jira/browse/CA
 
 
+1.1.15 — TBD
+------------
+
+• CA-1436 - Collaborative Group Workspaces - Separate Projects and Protocols
+
+
 1.1.14 — Bad Data
 -----------------
 
