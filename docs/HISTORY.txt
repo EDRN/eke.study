@@ -6,8 +6,8 @@ changed, what's been fixed, and so forth, follows.  For issue IDs mentioned
 below, see the issue tracker at https://oodt.jpl.nasa.gov/jira/browse/CA
 
 
-1.1.15 — TBD
-------------
+1.1.15 — Werk Werk
+------------------
 
 • CA-1436 - Collaborative Group Workspaces - Separate Projects and Protocols
 • CA-1437 - Portal upgrade clears "project" flag
