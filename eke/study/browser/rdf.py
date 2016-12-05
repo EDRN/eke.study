@@ -90,14 +90,17 @@ class StudyFolderIngestor(KnowledgeFolderIngestor):
                 cbName = COLLABORATIVE_GROUP_DMCC_IDS_TO_NAMES.get(cbID)
                 if cbName:
                     for collabGroup in [i.getObject() for i in catalog(object_provides=_collabGroup, Title=cbName)]:
-                        currentProjects = collabGroup.getProjects()
-                        currentProtocols = collabGroup.getProtocols()
+                        currentProjects, currentProtocols = collabGroup.getProjects(), collabGroup.getProtocols()
                         if protocol.project and protocol not in currentProjects:
                             currentProjects.append(protocol)
-                            collabGroup.setProjects(currentProjects)
+                        elif protocol.project and protocol in currentProtocols:
+                            currentProtocols.remove(protocol)
                         elif not protocol.project and protocol not in currentProtocols:
                             currentProtocols.append(protocol)
-                            collabGroup.setProtocols(currentProtocols)
+                        elif not protocol.project and protocol in currentProjects:
+                            currentProjects.remove(protocol)
+                        collabGroup.setProjects(currentProjects)
+                        collabGroup.setProtocols(currentProtocols)
 
 
 class StudyHandler(IngestHandler):

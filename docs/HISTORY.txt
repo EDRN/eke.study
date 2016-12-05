@@ -10,6 +10,7 @@ below, see the issue tracker at https://oodt.jpl.nasa.gov/jira/browse/CA
 ------------
 
 • CA-1436 - Collaborative Group Workspaces - Separate Projects and Protocols
+• CA-1437 - Portal upgrade clears "project" flag
 
 
 1.1.14 — Bad Data
