@@ -761,12 +761,6 @@ Fantastic!  How about collaborative group text?
     >>> browser.contents
     '...Esophagus Methylation Profiles...'
 
-Woot!  How about involved investigator sites?
-
-    >>> browser.open(portalURL + '/search?SearchableText=Tongue')
-    >>> browser.contents
-    '...Esophagus Methylation Profiles...'
-
 
 Duplicates
 ~~~~~~~~~~

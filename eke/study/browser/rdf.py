@@ -89,7 +89,8 @@ class StudyFolderIngestor(KnowledgeFolderIngestor):
                 # New protocol. Create it.
                 title = handler.generateTitle(uri, predicates)
                 created = handler.createObjects(objectID, title, uri, predicates, statements, context)
-                self.setInvolvedInvestigatorSites(catalog, created, protocolToInvolvedSites)
+                for protocol in created:
+                    self.setInvolvedInvestigatorSites(catalog, protocol, protocolToInvolvedSites)
             for obj in created:
                 obj.reindex()
             createdObjects.extend(created)
