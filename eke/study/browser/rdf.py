@@ -55,8 +55,8 @@ class StudyFolderIngestor(KnowledgeFolderIngestor):
             typeURI = predicates[_typeURI][0]
             if typeURI == _siteSpecificTypeURI:
                 protocolID, siteID = os.path.basename(urlparse.urlparse(unicode(uri)).path).split(u'-')
-                siteIDs = protocolToInvolvedSites.get(protocolID, [])
-                siteIDs.append(siteID)
+                siteIDs = protocolToInvolvedSites.get(protocolID, set())
+                siteIDs.add(siteID)
                 protocolToInvolvedSites[protocolID] = siteIDs
         # Now go through each protocol
         for uri, predicates in statements.items():
@@ -89,8 +89,8 @@ class StudyFolderIngestor(KnowledgeFolderIngestor):
                 # New protocol. Create it.
                 title = handler.generateTitle(uri, predicates)
                 created = handler.createObjects(objectID, title, uri, predicates, statements, context)
-                for protocol in created:
-                    self.setInvolvedInvestigatorSites(catalog, protocol, protocolToInvolvedSites)
+                for createdObject in created:
+                    self.setInvolvedInvestigatorSites(catalog, createdObject.obj, protocolToInvolvedSites)
             for obj in created:
                 obj.reindex()
             createdObjects.extend(created)
@@ -103,11 +103,12 @@ class StudyFolderIngestor(KnowledgeFolderIngestor):
         self._results = Results(self.objects, warnings=[])
         return self.renderResults()
     def setInvolvedInvestigatorSites(self, catalog, protocol, protocolToInvolvedSites):
-            protocolID = os.path.basename(urlparse.urlparse(protocol.identifier).path).split(u'-')[0]
-            siteNumbers = protocolToInvolvedSites.get(protocolID, [])
-            siteIDs = [_siteURIPrefix + i for i in siteNumbers]
-            siteBrains = catalog(identifier=siteIDs)
-            protocol.involvedInvestigatorSites = [i.getObject() for i in siteBrains]
+        protocol.setInvolvedInvestigatorSites([])
+        protocolID = os.path.basename(urlparse.urlparse(protocol.identifier).path).split(u'-')[0]
+        siteNumbers = protocolToInvolvedSites.get(protocolID, [])
+        siteIDs = [_siteURIPrefix + i for i in siteNumbers]
+        siteBrains = catalog(identifier=siteIDs, sort_on='sortable_title')
+        protocol.setInvolvedInvestigatorSites([i['UID'] for i in siteBrains])
     def updateCollaborativeGroups(self, createdObjects, catalog):
         for protocol in [i.obj for i in createdObjects]:
             cbText = protocol.collaborativeGroupText
