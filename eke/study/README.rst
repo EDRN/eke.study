@@ -554,9 +554,6 @@ Ingesting from the RDF data source ``testscheme://localhost/studies/a``::
     'http://swa.it/edrn/ps'
     >>> p1.abstract
     'Clinic surveillance and intelligence gathering.'
-    >>> involvedSites = [i.title for i in p1.involvedInvestigatorSites]
-    >>> u"Dr Tongue's 3D Clinic" in involvedSites and u'A Plain 2D Clinic' in involvedSites
-    True
     >>> p1.coordinatingInvestigatorSite.title
     u"Dr Tongue's 3D Clinic"
     >>> p1.leadInvestigatorSite.title
