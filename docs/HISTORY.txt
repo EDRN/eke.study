@@ -11,6 +11,7 @@ below, see the issue tracker at https://oodt.jpl.nasa.gov/jira/browse/CA
 
 • CA-1492 - Involved investigator sites not appearing on protocols
 • CA-1497 - Duplicates appearing in involved investigator sites
+• CA-1498 - Add anchors for biomarkers and science data
 
 
 1.1.15 — Werk Werk

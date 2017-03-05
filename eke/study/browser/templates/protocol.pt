@@ -169,7 +169,9 @@
                             </span>
                         </div>
                         <div>
-                            <label for='parent-fieldname-biomarkers' i18n:translate='label_biomarkers'>Biomarkers:</label>
+                            <label for='parent-fieldname-biomarkers' i18n:translate='label_biomarkers'>
+                                <a name='biomarkers'>Biomarkers:</a>
+                            </label>
                             <p class='discreet' i18n:translate='proto_noBiomarkers' tal:condition='not:context/biomarkers'>
                                 There are currently no biomarkers annotated for this protocol.
                             </p>
@@ -183,7 +185,9 @@
                             </ul>
                         </div>
                         <div>
-                            <label for='parent-fieldname-datasets' i18n:translate='label_datasets'>Datasets:</label>
+                            <label for='parent-fieldname-datasets' i18n:translate='label_datasets'>
+                                <a name='datasets'>Datasets:</a>
+                            </label>
                             <p class='discreet' i18n:translate='proto_noDatasets' tal:condition='not:context/datasets'>
                                 No datasets are currently associated with this protocol.
                             </p>
