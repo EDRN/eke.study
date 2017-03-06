@@ -22,6 +22,7 @@ _logger              = logging.getLogger(__name__)
 _typeURI             = URIRef('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
 _protocolTypeURI     = URIRef('http://edrn.nci.nih.gov/rdf/types.rdf#Protocol')
 _siteSpecificTypeURI = URIRef('http://edrn.nci.nih.gov/rdf/types.rdf#ProtocolSiteSpecific')
+_projectFlagURI      = URIRef('http://edrn.nci.nih.gov/rdf/schema.rdf#projectFlag')
 _siteURIPrefix       = u'http://edrn.nci.nih.gov/data/sites/'
 
 # Interface identifier for EDRN Collaborative Group, from edrnsite.collaborations
@@ -67,6 +68,7 @@ class StudyFolderIngestor(KnowledgeFolderIngestor):
                 continue
             results = catalog(identifier=unicode(uri), object_provides=IProtocol.__identifier__)
             objectID = handler.generateID(uri, predicates, normalizerFunction)
+            isProject = unicode(predicates.get(_projectFlagURI, ['Protocol'])[0]) == u'Project'
             if len(results) == 1 or objectID in context.keys():
                 # Existing protocol. Update it.
                 if objectID in context.keys():
@@ -75,6 +77,7 @@ class StudyFolderIngestor(KnowledgeFolderIngestor):
                     p = results[0].getObject()
                 oldID = p.id
                 updateObject(p, uri, predicates, context)
+                p.project = True if isProject else False
                 newID = handler.generateID(uri, predicates, normalizerFunction)
                 if oldID != newID:
                     # Need to update the object ID too
@@ -90,6 +93,7 @@ class StudyFolderIngestor(KnowledgeFolderIngestor):
                 title = handler.generateTitle(uri, predicates)
                 created = handler.createObjects(objectID, title, uri, predicates, statements, context)
                 for createdObject in created:
+                    createdObject.obj.project = True if isProject else False
                     self.setInvolvedInvestigatorSites(catalog, createdObject.obj, protocolToInvolvedSites)
             for obj in created:
                 obj.reindex()
