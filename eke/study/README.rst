@@ -596,8 +596,8 @@ Ingesting from the RDF data source ``testscheme://localhost/studies/a``::
     False
     >>> p1.protocolType
     'Fictional'
-    >>> p1.publications[0].title
-    'Letter to the editor: SeqXML and OrthoXML: standards for sequence and orthology information.'
+    >>> p1.publications[0].title in ('Letter to the editor: SeqXML and OrthoXML: standards for sequence and orthology information.', 'Early detection biomarkers for ovarian cancer.')
+    True
     >>> p1.outcome
     'Increased public safety.'
     >>> p1.secureOutcome
