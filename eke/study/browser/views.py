@@ -32,8 +32,9 @@ class StudyFolderView(KnowledgeFolderView):
         for i in catalogResults:
             piURL = piName = None
             if i.piUID:
-                uidBrain = uidCatalog(UID=i.piUID)[0]
-                piURL, piName = uidBrain.getURL(relative=False), uidBrain.Title
+                if len(uidCatalog(UID=i.piUID)) > 0:
+                    uidBrain = uidCatalog(UID=i.piUID)[0]
+                    piURL, piName = uidBrain.getURL(relative=False), uidBrain.Title
             results.append(dict(
                 title=i.Title, description=i.Description, url=i.getURL(), abstract=i.abstract, piName=piName, piURL=piURL
             ))

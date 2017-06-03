@@ -637,6 +637,18 @@ ProtocolSchema += atapi.Schema((
             visible={'edit': 'invisible', 'view': 'invisible'},
         ),
     ),
+    atapi.ComputedField(
+        'involvedInvestigatorUID',
+        required=False,
+        searchable=False,
+        storage=atapi.AnnotationStorage(),
+        multiValued=True,
+        expression='context._computeInvolvedSitePIUID()',
+        modes=('view',),
+        widget=atapi.ComputedWidget(
+            visible={'edit': 'invisible', 'view': 'invisible'},
+        ),
+    ),
 ))
 # FIXME: KnowledgeObjectSchema has title's predicate set to something wrong.
 # When that's finally fixed, remove this line:
@@ -699,6 +711,7 @@ class Protocol(folder.ATFolder, knowledgeobject.KnowledgeObject):
     datasets                     = atapi.ATReferenceFieldProperty('datasets')
     piName                       = atapi.ATFieldProperty('piName')
     datasetNames                 = atapi.ATFieldProperty('datasetNames')
+    involvedInvestigatorUID      = atapi.ATFieldProperty('involvedInvestigatorUID')
     involvedSiteNames            = atapi.ATFieldProperty('involvedSiteNames')
     def _computePIName(self):
         if not self.leadInvestigatorSite:
@@ -726,6 +739,10 @@ class Protocol(folder.ATFolder, knowledgeobject.KnowledgeObject):
         return u''
     def _computePIUID(self):
         return self.leadInvestigatorSite is not None and self.leadInvestigatorSite.getPiUID() or None
+    def _computeInvolvedSitePIUID(self):
+        if not self.involvedInvestigatorSites:
+            return None
+        return [i.getPiUID() for i in self.involvedInvestigatorSites if i and i.getPiUID()]
 
 atapi.registerType(Protocol, PROJECTNAME)
 
@@ -765,4 +782,5 @@ def ProtocolUpdater(context, event):
     context.datasetNames = context._computeDatasetNames()
     context.involvedSiteNames = context._computeInvolvedSiteNames()
     context.setDescription(context._computeDescription())
+    contex.involvedInvestigatorUID = context._computeInvolvedSitePIUID()
     context.reindexObject()
