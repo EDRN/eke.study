@@ -782,5 +782,5 @@ def ProtocolUpdater(context, event):
     context.datasetNames = context._computeDatasetNames()
     context.involvedSiteNames = context._computeInvolvedSiteNames()
     context.setDescription(context._computeDescription())
-    contex.involvedInvestigatorUID = context._computeInvolvedSitePIUID()
+    context.involvedInvestigatorUID = context._computeInvolvedSitePIUID()
     context.reindexObject()
