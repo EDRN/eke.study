@@ -6,7 +6,7 @@
 '''
 
 import doctest
-import unittest2 as unittest
+import unittest
 from plone.testing import layered
 from eke.study.testing import EKE_STUDY_FUNCTIONAL_TESTING as LAYER
 
